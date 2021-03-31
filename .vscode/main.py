@@ -9,23 +9,16 @@
 
 
 import tkinter as tk
-
 from tkinter import ttk
-
 from tkinter import * 
 
 from ctypes import *
-
 from dwfconstants import * 
 
 import math
-
 import time
-
 import sys
-
 import numpy as np
-
 import matplotlib.pyplot as plt
 
 
