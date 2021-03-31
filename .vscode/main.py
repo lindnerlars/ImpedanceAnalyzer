@@ -45,6 +45,8 @@ elif sys.platform.startswith("darwin"):
 else:
     dwf = cdll.LoadLibrary("libdwf.so")
 # endregion
+
+
 # region Window Functions
 def connectFunction():
 	szerr = create_string_buffer(512)
@@ -135,6 +137,8 @@ def quitFunction():
 	dwf.FDwfDeviceClose(hdwf)
 	win.quit()
 # endregion
+
+
 # region Window Layout
 # This is the section of code which creates the main window
 w = 540 # width for the Tk root
@@ -224,8 +228,6 @@ clearButton.grid(row = 6, column = 3, padx = 40, sticky = "E", ipadx = 25)
 quitButton = Button(win, text='Quit', state=NORMAL, bg='#F0F8FF', font=('arial', 12, 'normal'), command=quitFunction)
 quitButton.grid(row = 7, column = 3, padx = 40, sticky = "E", ipadx = 25)
 # endregion
-
-
 
 
 # Runs the event loop of Tkinter
