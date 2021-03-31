@@ -1,0 +1,27 @@
+- Version Control with Git
+
+- Im Info Fenster wird die aktuelle Spannung angezeigt
+
+- Ueberpruefen der eingegebenen Werte, ob diese in einem Bereich liegen
+
+- Tonsignal, wenn Test fertig
+
+- GUI Designer, damit des Fenster besser aussieht
+
+
+- Testreport mit wichtigsten Daten
+
+- Error management und wie die Messung fortgesetzt werden kann an der Stelle, wo der Fehler auftrat
+
+- Bei Fehler oeffnet sich eine Message Box
+
+- Remote Access auf Host-PC
+
+
+- Fuer Linux / RaspBerry kompilieren und auf diesem laufen lassen 
+
+- Das GUI schickt mir eine email, wenn Test fertig:
+https://www.nixtutor.com/linux/send-mail-through-gmail-with-python/
+
+
+
