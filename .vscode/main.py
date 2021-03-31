@@ -22,6 +22,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+# region Init
 # Default values for parameters
 freq_start = int(3.9e6)
 freq_end = int(4.1e6)
@@ -43,8 +44,10 @@ elif sys.platform.startswith("darwin"):
     dwf = cdll.LoadLibrary("/Library/Frameworks/dwf.framework/dwf")
 else:
     dwf = cdll.LoadLibrary("libdwf.so")
+# endregion
 
 
+# region Window Functions
 def connectFunction():
 	szerr = create_string_buffer(512)
 	dwf.FDwfDeviceOpen(c_int(-1), byref(hdwf))
@@ -61,7 +64,6 @@ def connectFunction():
 		infoOutput.insert(tk.INSERT, "AD2 connected\n")
 		infoOutput.see('end')
 
-
 def disconnectFunction():
 	dwf.FDwfDeviceClose(hdwf)
 	connectButton['state'] = tk.NORMAL
@@ -70,7 +72,6 @@ def disconnectFunction():
 	setButton['state'] = tk.DISABLED
 	infoOutput.insert(tk.INSERT, "AD2 disconnected\n")
 	infoOutput.see('end')
-
 
 def setFunction():
 	global freq_start
@@ -94,7 +95,6 @@ def setFunction():
 
 	infoOutput.insert(tk.INSERT, "All parameters set\n")
 	infoOutput.see('end')
-
 
 def startFunction():
 	initial = time.time()
@@ -130,18 +130,16 @@ def startFunction():
 	infoOutput.insert(tk.INSERT, "Finished: " + str(round(final - initial, 2)) + "s\n")
 	infoOutput.see('end')
 
-
 def clearFunction():
 	infoOutput.delete('1.0', END)
-
 
 def quitFunction():
 	dwf.FDwfDeviceClose(hdwf)
 	win.quit()
+# endregion
 
 
-
-
+# region Window Layout
 # This is the section of code which creates the main window
 w = 540 # width for the Tk root
 h = 300 # height for the Tk root
@@ -229,7 +227,7 @@ clearButton.grid(row = 6, column = 3, padx = 40, sticky = "E", ipadx = 25)
 
 quitButton = Button(win, text='Quit', state=NORMAL, bg='#F0F8FF', font=('arial', 12, 'normal'), command=quitFunction)
 quitButton.grid(row = 7, column = 3, padx = 40, sticky = "E", ipadx = 25)
-
+# endregion
 
 
 # Runs the event loop of Tkinter
