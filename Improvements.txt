@@ -1,5 +1,3 @@
-- Version Control with Git
-
 - Im Info Fenster wird die aktuelle Spannung angezeigt
 
 - Ueberpruefen der eingegebenen Werte, ob diese in einem Bereich liegen
