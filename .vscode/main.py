@@ -21,6 +21,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 # Default values for parameters
 freq_start = int(3.9e6)
 freq_end = int(4.1e6)
@@ -34,7 +35,6 @@ hdwf = c_int()
 sts = c_byte()
 impedance = c_double()
 phase = c_double()
-
 
 # Load .dll
 if sys.platform.startswith("win"):
