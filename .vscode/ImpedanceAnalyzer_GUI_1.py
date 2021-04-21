@@ -55,24 +55,24 @@ def connectFunction():
     if hdwf.value == hdwfNone.value:
         dwf.FDwfGetLastErrorMsg(szerr)
         infoOutput.insert(tk.INSERT, str(szerr.value) + "\n")
-        infoOutput.see('end')
+        infoOutput.see("end")
     else:
-        connectButton['state'] = tk.DISABLED
-        disconnectButton['state'] = tk.NORMAL
-        startButton['state'] = tk.NORMAL
-        setButton['state'] = tk.NORMAL
+        connectButton["state"] = tk.DISABLED
+        disconnectButton["state"] = tk.NORMAL
+        startButton["state"] = tk.NORMAL
+        setButton["state"] = tk.NORMAL
         infoOutput.insert(tk.INSERT, "AD2 connected\n")
-        infoOutput.see('end')
+        infoOutput.see("end")
 
 
 def disconnectFunction():
     dwf.FDwfDeviceClose(hdwf)
-    connectButton['state'] = tk.NORMAL
-    disconnectButton['state'] = tk.DISABLED
-    startButton['state'] = tk.DISABLED
-    setButton['state'] = tk.DISABLED
+    connectButton["state"] = tk.NORMAL
+    disconnectButton["state"] = tk.DISABLED
+    startButton["state"] = tk.DISABLED
+    setButton["state"] = tk.DISABLED
     infoOutput.insert(tk.INSERT, "AD2 disconnected\n")
-    infoOutput.see('end')
+    infoOutput.see("end")
 
 
 def setFunction():
@@ -93,15 +93,17 @@ def setFunction():
     # 0 = W1-C1-DUT-C2-R-GND, 1 = W1-C1-R-C2-DUT-GND, 8 = AD IA adapter
     dwf.FDwfAnalogImpedanceModeSet(hdwf, c_int(8))
     dwf.FDwfAnalogImpedanceFrequencySet(
-        hdwf, c_double(freq_start))  # frequency in Hertz
-    dwf.FDwfAnalogImpedanceReferenceSet(hdwf, c_double(
-        resistance))  # reference resistor value in Ohms
+        hdwf, c_double(freq_start)
+    )  # frequency in Hertz
+    dwf.FDwfAnalogImpedanceReferenceSet(
+        hdwf, c_double(resistance)
+    )  # reference resistor value in Ohms
     # Measurement amplitude, 0V to peak signal
     dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(amplitude))
     time.sleep(1)
 
     infoOutput.insert(tk.INSERT, "All parameters set\n")
-    infoOutput.see('end')
+    infoOutput.see("end")
 
 
 def startFunction():
@@ -129,28 +131,37 @@ def startFunction():
                 break
 
         dwf.FDwfAnalogImpedanceStatusMeasure(
-            hdwf, DwfAnalogImpedanceImpedance, byref(impedance))
+            hdwf, DwfAnalogImpedanceImpedance, byref(impedance)
+        )
         dwf.FDwfAnalogImpedanceStatusMeasure(
-            hdwf, DwfAnalogImpedanceImpedancePhase, byref(phase))
-        extfile.write(str(hz) + "\t" + str(abs(impedance.value)) +
-                      "\t" + str((phase.value / math.pi) * 180.0) + "\n")
+            hdwf, DwfAnalogImpedanceImpedancePhase, byref(phase)
+        )
+        extfile.write(
+            str(hz)
+            + "\t"
+            + str(abs(impedance.value))
+            + "\t"
+            + str((phase.value / math.pi) * 180.0)
+            + "\n"
+        )
         # extfile.write(str(hz) + "\t" + str(abs(impedance.value / 1000)) + "\t" + str(phase.value) + "\n")
 
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(0))  # Measurement end
 
     final = time.time()
-    infoOutput.insert(tk.INSERT, "Finished: " +
-                      str(round(final - initial, 2)) + "s\n")
-    infoOutput.see('end')
+    infoOutput.insert(tk.INSERT, "Finished: " + str(round(final - initial, 2)) + "s\n")
+    infoOutput.see("end")
 
 
 def clearFunction():
-    infoOutput.delete('1.0', END)
+    infoOutput.delete("1.0", END)
 
 
 def quitFunction():
     dwf.FDwfDeviceClose(hdwf)
     win.quit()
+
+
 # endregion
 
 
@@ -160,36 +171,39 @@ w = 540  # width for the Tk root
 h = 300  # height for the Tk root
 ws = win.winfo_screenwidth()  # width of the screen
 hs = win.winfo_screenheight()  # height of the screen
-x = (ws/2) - (w)
-y = (hs/2) - (h)
+x = (ws / 2) - (w)
+y = (hs / 2) - (h)
 # set the dimensions of the screen and where it is placed
-win.geometry('%dx%d+%d+%d' % (w, h, x, y))
-win.configure(background='#F0F8FF')
-win.title('Impedance Analyzer')
+win.geometry("%dx%d+%d+%d" % (w, h, x, y))
+win.configure(background="#F0F8FF")
+win.title("Impedance Analyzer")
 
 
 # This is the section of code which creates all labels
 startLabel = Label(
-    win, text='Start Freq [Hz]', bg='#F0F8FF', font=('arial', 12, 'normal'))
+    win, text="Start Freq [Hz]", bg="#F0F8FF", font=("arial", 12, "normal")
+)
 startLabel.grid(row=1, column=1, sticky="W")
 
-endLabel = Label(win, text='End Freq [Hz]',
-                 bg='#F0F8FF', font=('arial', 12, 'normal'))
+endLabel = Label(win, text="End Freq [Hz]", bg="#F0F8FF", font=("arial", 12, "normal"))
 endLabel.grid(row=2, column=1, sticky="W")
 
 deltaLabel = Label(
-    win, text='Delta Freq [Hz]', bg='#F0F8FF', font=('arial', 12, 'normal'))
+    win, text="Delta Freq [Hz]", bg="#F0F8FF", font=("arial", 12, "normal")
+)
 deltaLabel.grid(row=3, column=1, sticky="W")
 
 resistorLabel = Label(
-    win, text='Resistor [Ohm]', bg='#F0F8FF', font=('arial', 12, 'normal'))
+    win, text="Resistor [Ohm]", bg="#F0F8FF", font=("arial", 12, "normal")
+)
 resistorLabel.grid(row=4, column=1, sticky="W")
 
 amplitudeLabel = Label(
-    win, text='Amplitude [V]', bg='#F0F8FF', font=('arial', 12, 'normal'))
+    win, text="Amplitude [V]", bg="#F0F8FF", font=("arial", 12, "normal")
+)
 amplitudeLabel.grid(row=5, column=1, sticky="W")
 
-infoLabel = Label(win, text='Info', bg='#F0F8FF', font=('arial', 12, 'normal'))
+infoLabel = Label(win, text="Info", bg="#F0F8FF", font=("arial", 12, "normal"))
 infoLabel.grid(row=6, column=1, sticky="W")
 
 
@@ -221,29 +235,65 @@ infoOutput.grid(row=6, column=2, sticky="W")
 
 
 # This is the section of code which creates all buttons
-connectButton = Button(win, text='Connect', state=NORMAL, bg='#F0F8FF', font=(
-    'arial', 12, 'normal'), command=connectFunction)
+connectButton = Button(
+    win,
+    text="Connect",
+    state=NORMAL,
+    bg="#F0F8FF",
+    font=("arial", 12, "normal"),
+    command=connectFunction,
+)
 # connectButton = ttk.Button(win, text = 'Connect')
 connectButton.grid(row=1, column=3, padx=40, sticky="E", ipadx=25)
 
-disconnectButton = Button(win, text='Disconnect', state=DISABLED, bg='#F0F8FF', font=(
-    'arial', 12, 'normal'), command=disconnectFunction)
+disconnectButton = Button(
+    win,
+    text="Disconnect",
+    state=DISABLED,
+    bg="#F0F8FF",
+    font=("arial", 12, "normal"),
+    command=disconnectFunction,
+)
 disconnectButton.grid(row=2, column=3, padx=40, sticky="E", ipadx=25)
 
-setButton = Button(win, text='Set Parameters', state=DISABLED,
-                   bg='#F0F8FF', font=('arial', 12, 'normal'), command=setFunction)
+setButton = Button(
+    win,
+    text="Set Parameters",
+    state=DISABLED,
+    bg="#F0F8FF",
+    font=("arial", 12, "normal"),
+    command=setFunction,
+)
 setButton.grid(row=4, column=3, padx=40, sticky="E", ipadx=25)
 
-startButton = Button(win, text='Start', state=DISABLED, bg='#F0F8FF', font=(
-    'arial', 12, 'normal'), command=startFunction)
+startButton = Button(
+    win,
+    text="Start",
+    state=DISABLED,
+    bg="#F0F8FF",
+    font=("arial", 12, "normal"),
+    command=startFunction,
+)
 startButton.grid(row=5, column=3, padx=40, sticky="E", ipadx=25)
 
-clearButton = Button(win, text='Info Clear', state=NORMAL, bg='#F0F8FF', font=(
-    'arial', 12, 'normal'), command=clearFunction)
+clearButton = Button(
+    win,
+    text="Info Clear",
+    state=NORMAL,
+    bg="#F0F8FF",
+    font=("arial", 12, "normal"),
+    command=clearFunction,
+)
 clearButton.grid(row=6, column=3, padx=40, sticky="E", ipadx=25)
 
-quitButton = Button(win, text='Quit', state=NORMAL, bg='#F0F8FF', font=(
-    'arial', 12, 'normal'), command=quitFunction)
+quitButton = Button(
+    win,
+    text="Quit",
+    state=NORMAL,
+    bg="#F0F8FF",
+    font=("arial", 12, "normal"),
+    command=quitFunction,
+)
 quitButton.grid(row=7, column=3, padx=40, sticky="E", ipadx=25)
 # endregion
 
