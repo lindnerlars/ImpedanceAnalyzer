@@ -1,13 +1,15 @@
-- Im Info Fenster wird die aktuelle Spannung angezeigt
-
 - Ueberpruefen der eingegebenen Werte, ob diese in einem Bereich liegen
 
 - Tonsignal, wenn Test fertig
 
-- GUI Designer, damit des Fenster besser aussieht
-
 - Pfad des text files kann vom User definiert werden
 
+- Progress bar der den Fortschritt anzeigt
+
+
+
+
+- GUI Designer, damit des Fenster besser aussieht
 
 - Testreport mit wichtigsten Daten
 
@@ -16,6 +18,8 @@
 - Bei Fehler oeffnet sich eine Message Box
 
 - Remote Access auf Host-PC
+
+
 
 
 - Fuer Linux / RaspBerry kompilieren und auf diesem laufen lassen 
