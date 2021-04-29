@@ -27,9 +27,9 @@ import matplotlib.pyplot as plt
 freq_start = int(3.5e6)
 freq_end = int(4.5e6)
 freq_delta = int(10000)
-amp_start = float(0.1)
-amp_end = float(0.3)
-amp_delta = float(0.1)
+amp_start = int(100)
+amp_end = int(100)
+amp_delta = int(100)
 resistance = int(1000)
 
 # Variables Definitons
@@ -84,15 +84,17 @@ def setFunction():
     global freq_start
     global freq_end
     global freq_delta
-    global resistance
     global amp_start
+    global amp_end
+    global amp_delta
+    global resistance
     freq_start = int(startFreqInput.get())
     freq_end = int(endFreqInput.get())
     freq_delta = int(deltaFreqInput.get())
+    amp_start = int(startAmpInput.get())
+    amp_end = int(endAmpInput.get())
+    amp_delta = int(deltaAmpInput.get())
     resistance = int(resistanceInput.get())
-    amp_start = float(startAmpInput.get())
-    amp_end = float(endAmpInput.get())
-    amp_delta = float(deltaAmpInput.get())
 
     dwf.FDwfDeviceAutoConfigureSet(hdwf, c_int(3))  # this option will enable dynamic adjustment of analog out settings like: frequency, amplitude...
     dwf.FDwfAnalogImpedanceReset(hdwf)
@@ -108,17 +110,16 @@ def setFunction():
 
 def startFunction():
     startButton.update()
-    infoOutput.insert(tk.INSERT, "Start Measurement:" + str(amp_start) + "V \n")
-    infoOutput.update()                                 # Forces the GUI to update the text box
-
     initial = time.time()                               # Take time stamp
-
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(1))    # Measurement Start
 
-    for amp in range(amp_start, amp_end, amp_delta):                       # Runs all the amplitude range
+    for amp in range(amp_start, amp_end + 1, amp_delta):                    # Runs all the amplitude range
+        infoOutput.insert(tk.INSERT, "Start Measurement:" + str(amp) + "mV \n")
+        infoOutput.update()                                                 # Forces the GUI to update the text box
+        infoOutput.see('end')
 
-        extfile = open("impedance_" + str(amp) + "V_" + str(resistance) + "Ohm.txt", "w")
-        dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(amp_start))      # Sets the stimulus amplitude (0V to peak signal)
+        extfile = open("impedance_" + str(amp) + "mV_" + str(resistance) + "Ohm.txt", "w")  # Open text-file to write measurement values
+        dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(float(amp/1000)))      # Sets the stimulus amplitude (0V to peak signal)
 
         for freq in range(freq_start, freq_end + 1, freq_delta):            # Runs all the frequency range
             dwf.FDwfAnalogImpedanceFrequencySet(hdwf, c_double(freq))       # Sets the stimulus frequency
@@ -184,13 +185,13 @@ endFreqLabel.grid(row=2, column=1, sticky="W")
 deltaFreqLabel = Label(win, text="Delta Freq [Hz]", bg="#F0F8FF", font=("arial", 12, "normal"))
 deltaFreqLabel.grid(row=3, column=1, sticky="W")
 
-startAmpLabel = Label(win, text="Start Amp [V]", bg="#F0F8FF", font=("arial", 12, "normal"))
+startAmpLabel = Label(win, text="Start Amp [mV]", bg="#F0F8FF", font=("arial", 12, "normal"))
 startAmpLabel.grid(row=4, column=1, sticky="W")
 
-endAmpLabel = Label(win, text="End Amp [V]", bg="#F0F8FF", font=("arial", 12, "normal"))
+endAmpLabel = Label(win, text="End Amp [mV]", bg="#F0F8FF", font=("arial", 12, "normal"))
 endAmpLabel.grid(row=5, column=1, sticky="W")
 
-deltaAmpLabel = Label(win, text="Delta Amp [V]", bg="#F0F8FF", font=("arial", 12, "normal"))
+deltaAmpLabel = Label(win, text="Delta Amp [mV]", bg="#F0F8FF", font=("arial", 12, "normal"))
 deltaAmpLabel.grid(row=6, column=1, sticky="W")
 
 resistorLabel = Label(win, text="Resistor [Ohm]", bg="#F0F8FF", font=("arial", 12, "normal"))
