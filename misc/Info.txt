@@ -1,2 +1,2 @@
-Dieser Ordner enthaelt verschiedne Images oder Tools fuer das Projekt. 
+Dieser Ordner enthaelt verschiedene Informationen, Images und Tools fuer das Projekt. 
 
