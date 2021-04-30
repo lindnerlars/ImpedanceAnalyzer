@@ -38,6 +38,7 @@ hdwf = c_int()
 sts = c_byte()
 impedance = c_double()
 phase = c_double()
+incdec = c_int()
 
 # Load .dll
 if sys.platform.startswith("win"):
@@ -109,7 +110,7 @@ def setFunction():
 
 
 def startFunction():
-    startButton.update()
+    win.update()
     initial = time.time()                               # Take time stamp
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(1))    # Measurement Start
 
@@ -158,13 +159,16 @@ def quitFunction():
     win.quit()
 
 
+# def incdecFunction():
+#     win.update()
+
 # endregion
 
 
 # region Window Layout
 # This is the section of code which creates the main window
-w = 540  # width for the Tk root
-h = 320  # height for the Tk root
+w = 560  # width for the Tk root
+h = 330  # height for the Tk root
 ws = win.winfo_screenwidth()  # width of the screen
 hs = win.winfo_screenheight()  # height of the screen
 x = (ws / 2) - (w)
@@ -204,7 +208,7 @@ infoLabel.grid(row=8, column=1, sticky="W")
 # This is the section of code which creates all text input boxes
 startFreqInput = Entry(win)
 startFreqInput.insert(END, str(freq_start))
-startFreqInput.grid(row=1, column=2, padx=20, ipadx=20, sticky="W")
+startFreqInput.grid(row=1, column=2, padx=20, ipadx=20)
 
 endFreqInput = Entry(win)
 endFreqInput.insert(END, str(freq_end))
@@ -226,8 +230,9 @@ deltaAmpInput = Entry(win)
 deltaAmpInput.insert(END, str(amp_delta))
 deltaAmpInput.grid(row=6, column=2, padx=20, ipadx=20)
 
-resistanceInput = Entry(win)
-resistanceInput.insert(END, str(resistance))
+resistanceInput = ttk.Combobox(win, values = [10, 100, 1000, 10000, 100000, 1000000])
+resistanceInput.set(1000)
+resistanceInput.state(["readonly"])
 resistanceInput.grid(row=7, column=2, padx=20, ipadx=20)
 
 
@@ -290,6 +295,13 @@ quitButton = Button(
     font=("arial", 12, "normal"),
     command=quitFunction,)
 quitButton.grid(row=7, column=3, padx=40, sticky="E", ipadx=25)
+
+increaseButton = Radiobutton(win, text = "Increase", state = NORMAL, bg="#F0F8FF", font=("arial", 12, "normal"), variable=incdec, value=1)
+increaseButton.grid(row=8, column=3, padx=0, pady= 0, sticky="W", ipadx=25, ipady=0)
+
+decreaseButton = Radiobutton(win, text = "Decrease", state = NORMAL, bg="#F0F8FF", font=("arial", 12, "normal"), variable=incdec, value=2)
+decreaseButton.grid(row=9, column=3, padx=0, pady=0, sticky="W", ipadx=25, ipady=0)
+
 # endregion
 
 

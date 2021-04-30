@@ -1,10 +1,11 @@
 - Ueberpruefen der eingegebenen Werte, ob diese in einem Bereich liegen
 
+- Progress bar der den Fortschritt anzeigt
+
 - Tonsignal, wenn Test fertig
 
 - Pfad des text files kann vom User definiert werden
 
-- Progress bar der den Fortschritt anzeigt
 
 
 
