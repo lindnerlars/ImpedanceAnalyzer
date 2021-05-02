@@ -112,15 +112,16 @@ def setFunction():
 def startFunction():
     win.update()
     initial = time.time()                               # Take time stamp
+
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(1))    # Measurement Start
 
     for amp in range(amp_start, amp_end + 1, amp_delta):                    # Runs all the amplitude range
         infoOutput.insert(tk.INSERT, "Start Measurement:" + str(amp) + "mV \n")
         infoOutput.update()                                                 # Forces the GUI to update the text box
-        infoOutput.see('end')
+        infoOutput.see('end')                                               # Allows scrolling in text widget 
 
         extfile = open("impedance_" + str(amp) + "mV_" + str(resistance) + "Ohm.txt", "w")  # Open text-file to write measurement values
-        dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(float(amp/1000)))      # Sets the stimulus amplitude (0V to peak signal)
+        dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(float(amp/1000)))                # Sets the stimulus amplitude (0V to peak signal)
 
         for freq in range(freq_start, freq_end + 1, freq_delta):            # Runs all the frequency range
             dwf.FDwfAnalogImpedanceFrequencySet(hdwf, c_double(freq))       # Sets the stimulus frequency
@@ -157,11 +158,6 @@ def clearFunction():
 def quitFunction():
     dwf.FDwfDeviceClose(hdwf)
     win.quit()
-
-
-# def incdecFunction():
-#     win.update()
-
 # endregion
 
 
