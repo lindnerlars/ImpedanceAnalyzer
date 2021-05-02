@@ -113,6 +113,7 @@ def startFunction():
     win.update()
     initial = time.time()                               # Take time stamp
 
+    # region Measurement
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(1))    # Measurement Start
 
     for amp in range(amp_start, amp_end + 1, amp_delta):                    # Runs all the amplitude range
@@ -201,7 +202,8 @@ infoLabel = Label(win, text="Info", bg="#F0F8FF", font=("arial", 12, "normal"))
 infoLabel.grid(row=8, column=1, sticky="W")
 
 
-# This is the section of code which creates all text input boxes
+# region Text Boxes
+# Input Boxes
 startFreqInput = Entry(win)
 startFreqInput.insert(END, str(freq_start))
 startFreqInput.grid(row=1, column=2, padx=20, ipadx=20)
