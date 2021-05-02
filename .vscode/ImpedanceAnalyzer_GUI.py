@@ -9,6 +9,7 @@
 
 
 import tkinter as tk
+# import utilities as ut
 from tkinter import ttk
 from tkinter import *
 
@@ -102,9 +103,6 @@ def setFunction():
     dwf.FDwfDeviceAutoConfigureSet(hdwf, c_int(3))  # this option will enable dynamic adjustment of analog out settings like: frequency, amplitude...
     dwf.FDwfAnalogImpedanceReset(hdwf)
     dwf.FDwfAnalogImpedanceModeSet(hdwf, c_int(8))  # 0 = W1-C1-DUT-C2-R-GND, 1 = W1-C1-R-C2-DUT-GND, 8 = AD IA adapter
-    # dwf.FDwfAnalogImpedanceFrequencySet(hdwf, c_double(freq_start))  # frequency in Hertz
-    dwf.FDwfAnalogImpedanceReferenceSet(hdwf, c_double(resistance))  # reference resistor value in Ohms
-    # dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(amp_start))  # Measurement amplitude, 0V to peak signal
     time.sleep(1)
 
     if (dec.get() == False):
@@ -124,14 +122,16 @@ def startFunction():
     # region Measurement
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(1))    # Measurement Start
 
-    # For-loop Increasing
+    # region For-loop Increasing
+    # ut.measurementFunction(hdwf, sts, infoOutput, amp_start, amp_end, amp_delta, freq_start, freq_end, freq_delta, resistance)
     for amp in range(amp_start, amp_end + 1, amp_delta):                    # Runs all the amplitude range
-        infoOutput.insert(tk.INSERT, "Start Measurement Inc:" + str(amp) + "mV \n")
+        infoOutput.insert(tk.INSERT, "Start Measurement Inc: " + str(amp) + "mV \n")
         infoOutput.update()                                                 # Forces the GUI to update the text box
         infoOutput.see('end')                                               # Allows scrolling in text widget 
 
         extfile = open("impedance_" + str(amp) + "mV_" + str(resistance) + "Ohm_Inc.txt", "w")  # Open text-file to write measurement values
         dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(float(amp/1000)))                # Sets the stimulus amplitude (0V to peak signal)
+        dwf.FDwfAnalogImpedanceReferenceSet(hdwf, c_double(resistance))                     # Sets the reference resistor value in Ohms
 
         for freq in range(freq_start, freq_end + 1, freq_delta):            # Runs all the frequency range increasing
             dwf.FDwfAnalogImpedanceFrequencySet(hdwf, c_double(freq))       # Sets the stimulus frequency
@@ -151,16 +151,18 @@ def startFunction():
             extfile.write(str(freq) + "\t" + str(abs(impedance.value)) + "\t" + str((phase.value / math.pi) * 180.0) + "\n")    # Write frequency, impedance and phase value to file
 
         extfile.close()
+    # endregion
 
-    # For-loop Decreasing
+    # region For-loop Decreasing
     if(dec.get() == True):       
         for amp in range(amp_start, amp_end + 1, amp_delta):                    # Runs all the amplitude range
-            infoOutput.insert(tk.INSERT, "Start Measurement Dec:" + str(amp) + "mV \n")
+            infoOutput.insert(tk.INSERT, "Start Measurement Dec: " + str(amp) + "mV \n")
             infoOutput.update()                                                 # Forces the GUI to update the text box
             infoOutput.see('end')                                               # Allows scrolling in text widget 
 
             extfile = open("impedance_" + str(amp) + "mV_" + str(resistance) + "Ohm_Dec.txt", "w")  # Open text-file to write measurement values
             dwf.FDwfAnalogImpedanceAmplitudeSet(hdwf, c_double(float(amp/1000)))                # Sets the stimulus amplitude (0V to peak signal)
+            dwf.FDwfAnalogImpedanceReferenceSet(hdwf, c_double(resistance))                     # Sets the reference resistor value in Ohms
 
             for freq in range(freq_end, freq_start - 1, -freq_delta):               # Runs all the frequency range decreasing
                 dwf.FDwfAnalogImpedanceFrequencySet(hdwf, c_double(freq))       # Sets the stimulus frequency
@@ -180,6 +182,7 @@ def startFunction():
                 extfile.write(str(freq) + "\t" + str(abs(impedance.value)) + "\t" + str((phase.value / math.pi) * 180.0) + "\n")    # Write frequency, impedance and phase value to file
 
             extfile.close()
+    # endregion
 
     dwf.FDwfAnalogImpedanceConfigure(hdwf, c_int(0))    # Measurement End
     # endregion
