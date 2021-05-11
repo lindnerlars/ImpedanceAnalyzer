@@ -1,0 +1,10 @@
+Ich verwende ein Virtual Environment fuer mein Projekt. Ich habe den Phtyon Interpreter von 3.8 auf 3.9 upgraded und den 3.8 deinstalliert. Ich habe im Windows Store Python 3.9 installiert. 
+
+Dann im Virtual Environment die Python version upgraded, siehe .pdf Dokumente. Dann hat mein Interpreter das numpy modul nicht mehr gefunden. Ich musste numpy und matlabplot neu installieren.
+
+-> Fazit: Es war ein Chaos und das nachste Mal behalte ich einfach die aktuelle Python Version. Es hat mich viel Zeit gekostet, alles zu reparieren!!!
+
+
+
+
+
