@@ -9,7 +9,6 @@
 
 
 import tkinter as tk
-# import utilities as ut
 from tkinter import ttk
 from tkinter import *
 
